@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>蝦皮購物車：極速秒殺 Fitts' Law 實證研究</title>
+  <style>
+    :root {
+      --shopee-orange: #ee4d2d;
+      --shopee-dark-orange: #d73211;
+      --bg-gray: #f5f5f5;
+      --border-color: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    body { background: #18191a; color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+
+    .top-header { width: 100%; max-width: 960px; background: #fff; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--shopee-orange); margin-top: 10px; border-radius: 8px 8px 0 0; }
+    .logo-area { display: flex; align-items: center; gap: 10px; color: var(--shopee-orange); font-size: 1.3rem; font-weight: bold; }
+    .status-badge { background: #fff1ef; color: var(--shopee-orange); border: 1px solid #ffc5b8; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+
+    .cart-wrapper { width: 100%; max-width: 960px; background: var(--bg-gray); padding: 16px; border-radius: 0 0 8px 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); flex: 1; display: flex; flex-direction: column; }
+
+    #intro-card { background: #fff; padding: 36px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color); }
+    #intro-card h2 { color: var(--shopee-orange); margin-bottom: 14px; font-size: 1.5rem; }
+    #intro-card p { color: #555; line-height: 1.8; margin-bottom: 24px; text-align: left; font-size: 0.95rem; }
+    .primary-action-btn { background: var(--shopee-orange); color: #fff; border: none; font-weight: bold; font-size: 1rem; padding: 12px 32px; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+    .primary-action-btn:hover { background: var(--shopee-dark-orange); }
+
+    #experiment-area { display: none; flex-direction: column; gap: 12px; }
+    .banner-flash { background: linear-gradient(90deg, #ff4338, #ff6b35); color: #fff; padding: 10px 16px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 0.95rem; }
+
+    /* Interactive Canvas */
+    .cart-canvas { position: relative; width: 100%; height: 460px; background: #fff; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; user-select: none; }
+    
+    /* Product Item (Start Node) */
+    .product-box { position: absolute; display: flex; align-items: center; gap: 12px; background: #fff; border: 2px solid #ffbfae; padding: 10px 14px; border-radius: 8px; box-shadow: 0 4px 12px rgba(238,77,45,0.15); z-index: 10; cursor: pointer; transition: transform 0.1s ease; }
+    .product-box:hover { transform: scale(1.02); }
+    .prod-checkbox { width: 26px; height: 26px; border: 2px solid var(--shopee-orange); border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #fff; flex-shrink: 0; }
+    .prod-checkbox.active { background: var(--shopee-orange); }
+    .prod-checkbox.active::after { content: "✔"; color: #fff; font-size: 16px; font-weight: bold; }
+    .prod-img { width: 50px; height: 50px; background: #f3f4f6; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; }
+    .prod-meta { font-size: 0.85rem; }
+    .prod-title { font-weight: bold; color: #222; margin-bottom: 2px; }
+    .prod-price { color: var(--shopee-orange); font-size: 1.1rem; font-weight: 800; }
+    .prod-origin { color: #999; text-decoration: line-through; font-size: 0.75rem; margin-left: 6px; }
+
+    /* Bottom Checkout Bar */
+    .bottom-checkout-bar { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #fff; border-top: 2px solid #f0f0f0; display: flex; justify-content: flex-end; align-items: center; padding: 0 24px; gap: 20px; z-index: 5; }
+    .total-price-wrap { text-align: right; }
+    .total-title { font-size: 0.8rem; color: #777; }
+    .total-val { color: var(--shopee-orange); font-size: 1.3rem; font-weight: 800; }
+    
+    /* Target Checkout Button */
+    #checkout-btn {
+      background: var(--shopee-orange); color: #fff; font-weight: bold; font-size: 1rem;
+      border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      height: 48px; transition: width 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+      white-space: nowrap; overflow: hidden;
+    }
+    #checkout-btn.disabled { background: #d1d5db; color: #888; cursor: not-allowed; }
+
+    #summary-view { display: none; background: #fff; padding: 30px; border-radius: 8px; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.85rem; }
+    th, td { border: 1px solid #e5e7eb; padding: 8px; text-align: center; }
+    th { background: #f9fafb; color: #4b5563; }
+  </style>
+</head>
+<body>
+
+  <div class="top-header">
+    <div class="logo-area">
+      <span>🛒 蝦皮購物</span>
+      <span style="font-size: 0.95rem; color:#666; font-weight:normal; border-left:1px solid #ddd; padding-left:10px;">Fitts' Law 購物車結帳實驗</span>
+    </div>
+    <div class="status-badge" id="trial-badge">準備開始</div>
+  </div>
+
+  <div class="cart-wrapper">
+    
+    <!-- Step 1: Instruction Intro -->
+    <div id="intro-card">
+      <h2>雙 11 極速搶購：購物車結帳 Fitts' Law 實證研究</h2>
+      <p>
+        <strong>【實驗流程說明】</strong> 實驗完全對齊標準 Fitts' Law 評測架構[cite: 1]：<br>
+        - 共包含 <strong>9 個正式回合（Trials）</strong>，系統化涵蓋 9 種距離（$A$）與寬度（$W$）組合。<br>
+        - 每個回合中，相同的幾何條件將<strong>重複操作 5 次</strong>以消除隨機誤差，系統自動取平均運動時間（Average $MT$）[cite: 1, 2]。<br>
+        - <strong>自適應熱區創新（Innovation）：</strong> 結帳按鈕具備動態磁吸擴張熱區，測量人因輔助對實質吞吐量的影響[cite: 1]。<br><br>
+        <strong>【操作指引】</strong> 點擊商品「勾選框」啟動計時 $\to$ 以極限速度點擊右下角橘色【去買單】按鈕完成下單[cite: 1]！
+      </p>
+      <button class="primary-action-btn" onclick="startExperiment()">開始實驗測試</button>
+    </div>
+
+    <!-- Step 2: Interactive Experiment Canvas -->
+    <div id="experiment-area">
+      <div class="banner-flash">
+        <span>⚡ AirPods Pro 2 破盤搶購進行中！</span>
+        <span id="prompt-text" style="background:rgba(0,0,0,0.25); padding:3px 10px; border-radius:4px;">步驟 1：請勾選特價商品</span>
+      </div>
+
+      <div class="cart-canvas" id="canvas-stage" onmousemove="handleMouseMove(event)">
+        
+        <!-- Product Item (Start Node) -->
+        <div class="product-box" id="product-box" onclick="onCheckboxClicked()">
+          <div class="prod-checkbox" id="checkbox-node"></div>
+          <div class="prod-img">🎧</div>
+          <div class="prod-meta">
+            <div class="prod-title">AirPods Pro 2 限量破盤價</div>
+            <div>
+              <span class="prod-price">$999</span>
+              <span class="prod-origin">$7,490</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Target Button Area -->
+        <div class="bottom-checkout-bar">
+          <div class="total-price-wrap">
+            <div class="total-title">總金額 (1 個商品):</div>
+            <div class="total-val" id="display-total">$0</div>
+          </div>
+          <button id="checkout-btn" class="disabled" onclick="onCheckoutClicked()">去買單</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Step 3: Summary & CSV -->
+    <div id="summary-view">
+      <h2 style="color:var(--shopee-orange); margin-bottom: 10px;">測試完成！數據已成功導出</h2>
+      <p style="color:#666; font-size:0.9rem;">已產出 9 組正式條件之平均數據（各條件重複 5 次平均）[cite: 1, 2]。</p>
+      
+      <div style="max-height: 280px; overflow-y: auto; margin: 16px 0;">
+        <table id="data-table">
+          <thead>
+            <tr>
+              <th>Trial</th>
+              <th>Distance (A, px)</th>
+              <th>Width (W, px)</th>
+              <th>Index of Difficulty (ID, bits)</th>
+              <th>Average Time (MT, ms)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <button class="primary-action-btn" onclick="downloadCSV()">下載實驗 CSV 檔案</button>
+      <button class="primary-action-btn" style="background:#6b7280; margin-left:10px;" onclick="location.reload()">重新測驗</button>
+    </div>
+
+  </div>
+
+  <script>
+    // 9 組標準幾何條件
+    const conditions = [
+      { A: 280, W: 70 },  { A: 480, W: 70 },  { A: 720, W: 70 },
+      { A: 320, W: 130 }, { A: 540, W: 130 }, { A: 760, W: 130 },
+      { A: 300, W: 220 }, { A: 500, W: 220 }, { A: 680, W: 220 }
+    ];
+
+    const REPETITIONS_PER_CONDITION = 5; // 每組重複 5 次取平均
+    let currentConditionIndex = 0;
+    let currentRepetition = 0;
+    let repMTs = [];
+    let finalDataset = [];
+
+    let startTime = 0;
+    let isTiming = false;
+
+    function startExperiment() {
+      document.getElementById('intro-card').style.display = 'none';
+      document.getElementById('experiment-area').style.display = 'flex';
+      setupTrial();
+    }
+
+    function setupTrial() {
+      if (currentConditionIndex >= conditions.length) {
+        finishAllTrials();
+        return;
+      }
+
+      isTiming = false;
+      const cond = conditions[currentConditionIndex];
+      document.getElementById('trial-badge').innerText = `Trial ${currentConditionIndex + 1} / 9 (次數: ${currentRepetition + 1} / ${REPETITIONS_PER_CONDITION})`;
+      document.getElementById('prompt-text').innerText = '步驟 1：點擊勾選商品啟動計時';
+      document.getElementById('display-total').innerText = '$0';
+
+      const chk = document.getElementById('checkbox-node');
+      chk.classList.remove('active');
+
+      const checkoutBtn = document.getElementById('checkout-btn');
+      checkoutBtn.className = 'disabled';
+      checkoutBtn.innerText = '去買單';
+      checkoutBtn.style.width = `${cond.W}px`;
+      checkoutBtn.style.boxShadow = 'none';
+
+      // 結帳按鈕幾何中心
+      const targetCenterX = 800;
+      const targetCenterY = 425;
+
+      // 根據距離 A 動態定位商品卡片
+      const angle = (115 + (currentConditionIndex % 3) * 20) * (Math.PI / 180);
+      const startX = Math.round(targetCenterX - cond.A * Math.cos(angle - Math.PI / 2));
+      const startY = Math.round(targetCenterY - cond.A * Math.sin(angle - Math.PI / 2));
+
+      const box = document.getElementById('product-box');
+      box.style.left = `${Math.max(20, Math.min(620, startX - 120))}px`;
+      box.style.top = `${Math.max(20, Math.min(280, startY - 40))}px`;
+    }
+
+    function onCheckboxClicked() {
+      if (isTiming) return;
+      const chk = document.getElementById('checkbox-node');
+      chk.classList.add('active');
+      document.getElementById('display-total').innerText = '$999';
+
+      const checkoutBtn = document.getElementById('checkout-btn');
+      checkoutBtn.classList.remove('disabled');
+      checkoutBtn.innerText = '去買單 (1)';
+
+      document.getElementById('prompt-text').innerText = '步驟 2：快速點擊右下角【去買單】！';
+      
+      startTime = performance.now();
+      isTiming = true;
+    }
+
+    function handleMouseMove(e) {
+      if (!isTiming) return;
+      const checkoutBtn = document.getElementById('checkout-btn');
+      const rect = checkoutBtn.getBoundingClientRect();
+      const btnX = rect.left + rect.width / 2;
+      const btnY = rect.top + rect.height / 2;
+      const dist = Math.hypot(e.clientX - btnX, e.clientY - btnY);
+
+      const cond = conditions[currentConditionIndex];
+      if (dist < 110) {
+        checkoutBtn.style.width = `${cond.W * 1.25}px`;
+        checkoutBtn.style.boxShadow = '0 0 18px rgba(238, 77, 45, 0.7)';
+      } else {
+        checkoutBtn.style.width = `${cond.W}px`;
+        checkoutBtn.style.boxShadow = 'none';
+      }
+    }
+
+    function onCheckoutClicked() {
+      if (!isTiming) return;
+      const mt = performance.now() - startTime;
+      repMTs.push(mt);
+
+      currentRepetition++;
+      if (currentRepetition >= REPETITIONS_PER_CONDITION) {
+        // 完成該條件的所有重複次數，計算平均 MT
+        const avgMT = repMTs.reduce((a, b) => a + b, 0) / repMTs.length;
+        const cond = conditions[currentConditionIndex];
+        const id = Math.log2(cond.A / cond.W + 1);
+
+        finalDataset.push({
+          trial: currentConditionIndex + 1,
+          A: cond.A,
+          W: cond.W,
+          ID: id.toFixed(2),
+          avgMT: avgMT.toFixed(2)
+        });
+
+        // 進入下一個條件
+        currentConditionIndex++;
+        currentRepetition = 0;
+        repMTs = [];
+      }
+
+      setupTrial();
+    }
+
+    function finishAllTrials() {
+      document.getElementById('experiment-area').style.display = 'none';
+      document.getElementById('summary-view').style.display = 'block';
+      document.getElementById('trial-badge').innerText = '已完成';
+
+      const tbody = document.querySelector('#data-table tbody');
+      tbody.innerHTML = '';
+      finalDataset.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${r.trial}</td><td>${r.A}</td><td>${r.W}</td><td>${r.ID}</td><td>${r.avgMT}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function downloadCSV() {
+      let csv = 'Trial,Average Distance (pixels),Width (pixels),Index of Difficulty (bits),Average Time (milliseconds)\n';
+      finalDataset.forEach(r => {
+        csv += `${r.trial},${r.A},${r.W},${r.ID},${r.avgMT}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'fitts_law_part2_results.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
