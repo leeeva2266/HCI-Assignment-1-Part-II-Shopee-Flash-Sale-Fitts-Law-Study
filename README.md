@@ -1,12 +1,14 @@
 # HCI-Assignment-1-Part-II-Shopee-Flash-Sale-Fitts-Law-Study
 
 ## Experiment Demo Video
-
+https://drive.google.com/file/d/1HaAUWFkyUv0MY2Njl1fsR27cwyJ-0khH/view?usp=share_link
 
 ---
 
 ## 1. Scenario
-This experiment stems from the everyday frustration of trying and failing to grab flash-sale deals under extreme time pressure (such as Shopee's 11.11 limited-quantity sale for AirPods Pro 2 at $999)[cite: 1]. In a typical shopping cart interface, the user must first select the item checkbox and then immediately sweep the cursor across the canvas to click the primary "Checkout" button located in the bottom-right corner[cite: 1]. People often assume that missing out on flash deals is simply due to slow hand speed. I designed this experiment to investigate whether checkout delays are primarily caused by excessive cursor travel distance or tiny, hard-to-click target buttons.
+This experiment stems from the everyday frustration of trying and failing to grab flash-sale deals under extreme time pressure (such as Shopee's 11.11 limited-quantity sale for AirPods Pro 2 at $999). In a typical shopping cart interface, the user must first select the item checkbox and then immediately sweep the cursor across the canvas to click the primary "Checkout" button located in the bottom-right corner. People often assume that missing out on flash deals is simply due to slow hand speed. I designed this experiment to investigate whether checkout delays are primarily caused by excessive cursor travel distance or tiny, hard-to-click target buttons.
+
+---
 
 ## 2. Innovation
 Compared to the standard two-column red-bar test in the CS Field Guide, this project introduces several practical design changes:
@@ -14,6 +16,8 @@ Compared to the standard two-column red-bar test in the CS Field Guide, this pro
 * **Proportional Bidirectional Scaling:** In earlier iterations, only the checkout button was resized, which made the small checkbox an artificial bottleneck. Both the checkbox and the checkout button now scale simultaneously across three proportional size tiers (Small, Medium, Large), ensuring symmetric motor tolerance in both travel directions[cite: 1].
 * **First-Click Exclusion (ISO 9241-9 Standard):** Each condition requires 11 successful clicks[cite: 1]. The first click serves solely to position the cursor at the starting point and is excluded from timing calculations[cite: 1]. Only the subsequent 10 steady reciprocal strokes are averaged, filtering out initial visual orientation and hesitation delays[cite: 1].
 * **Calibrated Ergonomic Distances:** Traversal distances are constrained between 200px and 480px, matching natural wrist and finger sweeping arcs on a desktop and avoiding awkward mouse clutching or lifting artifacts[cite: 1].
+
+---
 
 ## 3. Application
 * **Why this design was chosen:** 
