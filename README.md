@@ -30,7 +30,18 @@ Compared to the standard two-column red-bar test in the CS Field Guide, this pro
 ## 4. Empirical Dataset & Custom Formula
 
 ### Collected Trial Data
-
+### Collected Trial Data
+| Trial | Distance (pixels) | Btn Width (pixels) | Btn Height (pixels) | Checkbox Size (pixels) | Index of Difficulty (bits) | Average Time (milliseconds) |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 1 | 480 | 45 | 24 | 16 | 3.54 | 728.20 |
+| 2 | 200 | 45 | 24 | 16 | 2.44 | 670.50 |
+| 3 | 480 | 100 | 36 | 28 | 2.54 | 649.50 |
+| 4 | 480 | 200 | 54 | 44 | 1.77 | 471.90 |
+| 5 | 200 | 100 | 36 | 28 | 1.58 | 483.40 |
+| 6 | 200 | 200 | 54 | 44 | 1.00 | 457.80 |
+| 7 | 340 | 45 | 24 | 16 | 3.10 | 780.50 |
+| 8 | 340 | 100 | 36 | 28 | 2.14 | 588.90 |
+| 9 | 340 | 200 | 54 | 44 | 1.43 | 437.50 |
 
 ### Linear Regression Results
 Linear regression across the 9 empirical conditions (MT = a + b * ID) yielded:
@@ -49,8 +60,8 @@ MT = 267.19 + 146.55 * log2(A / W + 1)
 
 ## 5. Regression Scatter Plot
 
-<!-- Upload your plot image to GitHub repository and reference it below -->
-![Fitts' Law Regression Plot](fitts_law_verified_results.png)
+<img width="1600" height="1100" alt="Code_Generated_Image" src="https://github.com/user-attachments/assets/c93a7645-b998-490e-a490-2a37a8ba2e56" />
+
 
 *(The plot displays the 9 empirical trial conditions mapping Index of Difficulty (ID, bits) on the x-axis against Average Movement Time (MT, ms) on the y-axis, overlaid with the linear regression trendline and R² score.)*
 
