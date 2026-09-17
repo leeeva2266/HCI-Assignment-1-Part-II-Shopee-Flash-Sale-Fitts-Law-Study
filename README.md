@@ -28,8 +28,6 @@ Compared to the standard two-column red-bar test in the CS Field Guide, this pro
 ---
 
 ## 4. Empirical Dataset & Custom Formula
-
-### Collected Trial Data
 ### Collected Trial Data
 | Trial | Distance (pixels) | Btn Width (pixels) | Btn Height (pixels) | Checkbox Size (pixels) | Index of Difficulty (bits) | Average Time (milliseconds) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
