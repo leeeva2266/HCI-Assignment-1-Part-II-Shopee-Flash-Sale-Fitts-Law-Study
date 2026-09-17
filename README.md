@@ -1,7 +1,7 @@
 # HCI-Assignment-1-Part-II-Shopee-Flash-Sale-Fitts-Law-Study
 
 ## Experiment Demo Video
-sha256:06784ba752c1f0298c20affd5e450ed73f800fca2202ea11715d7563227e9beb
+(https://github.com/leeeva2266/HCI-Assignment-1-Part-II-Shopee-Flash-Sale-Fitts-Law-Study/releases/download/v1.0/2026-09-17.11.10.12.mov)
 
 ---
 
