@@ -12,16 +12,16 @@ This experiment stems from the everyday frustration of trying and failing to gra
 
 ## 2. Innovation
 Compared to the standard two-column red-bar test in the CS Field Guide, this project introduces several practical design changes:
-* **Realistic E-Commerce Reciprocal Workflow:** Instead of abstract bars, the test uses a functional cart UI where users continuously alternate between an upper product checkbox (Start/Reset Node) and the bottom-right checkout button (Target Node)[cite: 1].
-* **Proportional Bidirectional Scaling:** In earlier iterations, only the checkout button was resized, which made the small checkbox an artificial bottleneck. Both the checkbox and the checkout button now scale simultaneously across three proportional size tiers (Small, Medium, Large), ensuring symmetric motor tolerance in both travel directions[cite: 1].
-* **First-Click Exclusion (ISO 9241-9 Standard):** Each condition requires 11 successful clicks[cite: 1]. The first click serves solely to position the cursor at the starting point and is excluded from timing calculations[cite: 1]. Only the subsequent 10 steady reciprocal strokes are averaged, filtering out initial visual orientation and hesitation delays[cite: 1].
-* **Calibrated Ergonomic Distances:** Traversal distances are constrained between 200px and 480px, matching natural wrist and finger sweeping arcs on a desktop and avoiding awkward mouse clutching or lifting artifacts[cite: 1].
+* **Realistic E-Commerce Reciprocal Workflow:** Instead of abstract bars, the test uses a functional cart UI where users continuously alternate between an upper product checkbox (Start/Reset Node) and the bottom-right checkout button (Target Node).
+* **Proportional Bidirectional Scaling:** In earlier iterations, only the checkout button was resized, which made the small checkbox an artificial bottleneck. Both the checkbox and the checkout button now scale simultaneously across three proportional size tiers (Small, Medium, Large), ensuring symmetric motor tolerance in both travel directions.
+* **First-Click Exclusion (ISO 9241-9 Standard):** Each condition requires 11 successful clicks. The first click serves solely to position the cursor at the starting point and is excluded from timing calculations. Only the subsequent 10 steady reciprocal strokes are averaged, filtering out initial visual orientation and hesitation delays.
+* **Calibrated Ergonomic Distances:** Traversal distances are constrained between 200px and 480px, matching natural wrist and finger sweeping arcs on a desktop and avoiding awkward mouse clutching or lifting artifacts.
 
 ---
 
 ## 3. Application
 * **Why this design was chosen:** 
-  During high-stakes checkout rushes, users easily rush their movements and overshoot small interface elements. Symmetrically enlarging both the checkbox and the checkout button provides sufficient motor tolerance without disrupting the store page's visual hierarchy[cite: 1].
+  During high-stakes checkout rushes, users easily rush their movements and overshoot small interface elements. Symmetrically enlarging both the checkbox and the checkout button provides sufficient motor tolerance without disrupting the store page's visual hierarchy.
 * **Real-World Problem Solved:** 
   The experiment clarifies whether distance or button dimensions dominate checkout speed. The empirical results show that expanding the button width from 45px to 200px cut movement time from over 700ms down to roughly 440ms (an improvement of nearly 40%). This confirms that widening interactive click zones on key checkout elements is far more effective at reducing user drop-off than simply relying on users to click faster.
 
@@ -33,7 +33,7 @@ Compared to the standard two-column red-bar test in the CS Field Guide, this pro
 
 
 ### Linear Regression Results
-Linear regression across the 9 empirical conditions (MT = a + b * ID) yielded[cite: 2]:
+Linear regression across the 9 empirical conditions (MT = a + b * ID) yielded:
 * Intercept a = 267.19 ms
 * Slope b = 146.55 ms/bit
 * Pearson correlation r = 0.9379
@@ -52,7 +52,7 @@ MT = 267.19 + 146.55 * log2(A / W + 1)
 <!-- Upload your plot image to GitHub repository and reference it below -->
 ![Fitts' Law Regression Plot](fitts_law_verified_results.png)
 
-*(The plot displays the 9 empirical trial conditions mapping Index of Difficulty (ID, bits) on the x-axis against Average Movement Time (MT, ms) on the y-axis, overlaid with the linear regression trendline and R² score.)*[cite: 2]
+*(The plot displays the 9 empirical trial conditions mapping Index of Difficulty (ID, bits) on the x-axis against Average Movement Time (MT, ms) on the y-axis, overlaid with the linear regression trendline and R² score.)*
 
 ---
 
