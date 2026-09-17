@@ -1,7 +1,9 @@
 # HCI-Assignment-1-Part-II-Shopee-Flash-Sale-Fitts-Law-Study
 
 ## Experiment Demo Video
-<video src="https://github.com/leeeva2266/HCI-Assignment-1-Part-II-Shopee-Flash-Sale-Fitts-Law-Study/releases/download/v1.0/2026-09-17.11.10.12.mp4" controls width="100%"></video>
+[![Watch the Experiment Video](https://img.youtube.com/vi/uohas7GYcAU/maxresdefault.jpg)](https://www.youtube.com/watch?v=uohas7GYcAU)
+
+*Click the image above to watch the experiment trial recording on YouTube.*
 
 ---
 
