@@ -1,5 +1,5 @@
 # HCI-Assignment-1-Part-II-Shopee-Flash-Sale-Fitts-Law-Study
-
+🔗 **[Live Demo](https://leeeva2266.github.io/HCI-Assignment-1-Part-II-Shopee-Flash-Sale-Fitts-Law-Study/)**
 ## Experiment Demo Video
 
 https://github.com/user-attachments/assets/b234d4c1-b946-4a15-8310-87482408b5a1
