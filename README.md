@@ -21,9 +21,10 @@ Compared to the standard two-column red-bar test in the CS Field Guide, this pro
 ---
 
 ## 3. Application
-* **Why this design was chosen:** 
+### Why this design was chosen:** 
   During high-stakes checkout rushes, users easily rush their movements and overshoot small interface elements. Symmetrically enlarging both the checkbox and the checkout button provides sufficient motor tolerance without disrupting the store page's visual hierarchy.
-* **Real-World Problem Solved:** 
+  
+### Real-World Problem Solved:** 
   The experiment clarifies whether distance or button dimensions dominate checkout speed. The empirical results show that expanding the button width from 45px to 200px cut movement time from over 700ms down to roughly 440ms (an improvement of nearly 40%). This confirms that widening interactive click zones on key checkout elements is far more effective at reducing user drop-off than simply relying on users to click faster.
 
 ---
